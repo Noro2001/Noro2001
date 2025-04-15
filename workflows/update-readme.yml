@@ -1,0 +1,27 @@
+name: Update README Stats
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # каждые 6 часов
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Generate GitHub Stats
+        run: echo "Автоматическое обновление не требуется, т.к. сторонние сервисы обновляют динамически."
+
+      - name: Commit & Push if changed
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add .
+          git diff --quiet && git diff --staged --quiet || git commit -m "⏫ auto: update README"
+          git push
